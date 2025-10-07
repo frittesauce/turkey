@@ -1,4 +1,5 @@
 mod args;
+mod build;
 mod create;
 
 use args::CmdArgs;
@@ -23,9 +24,7 @@ fn main() {
             }
         }
 
-        args::Cmd::Build => {
-            println!("we dont build things yet sorgy!");
-        }
+        args::Cmd::Build => build::build(),
 
         args::Cmd::Init => {
             let res = init();
