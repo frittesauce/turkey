@@ -4,6 +4,7 @@ mod create;
 use args::CmdArgs;
 use clap::Parser;
 
+use crate::create::init::init;
 use crate::create::new::new;
 
 fn main() {
@@ -27,7 +28,15 @@ fn main() {
         }
 
         args::Cmd::Init => {
-            println!("hmmmmmmmmmmm, no!");
+            let res = init();
+            match res {
+                Err(error) => {
+                    eprintln!("{:#}", error);
+                }
+                Ok(()) => {
+                    println!("made new project succesfully!")
+                }
+            }
         }
     }
 }
