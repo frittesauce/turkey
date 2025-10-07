@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Args, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
@@ -9,7 +11,7 @@ pub struct CmdArgs {
 
 #[derive(Debug, Subcommand)]
 pub enum Cmd {
-    Build,
+    Build { path: Option<PathBuf> },
 
     Init,
 
