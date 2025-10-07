@@ -1,12 +1,8 @@
-use clap:: {
-    Args,
-    Parser,
-    Subcommand
-};
+use clap::{Args, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
 #[clap(author, version, about)]
-pub struct CmdArgs{
+pub struct CmdArgs {
     #[clap(subcommand)]
     pub command: Cmd,
 }
@@ -17,11 +13,10 @@ pub enum Cmd {
 
     Init,
 
-    New(NewCommands)
+    New(NewCommands),
 }
 
 #[derive(Debug, Args)]
 pub struct NewCommands {
     pub name: String,
 }
-
