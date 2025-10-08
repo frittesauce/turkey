@@ -1,6 +1,10 @@
-use std::{io, path::Path};
+use std::{fs, io, path::Path};
 
-pub fn build(path: &Path) -> io::Result<&str> {
+use crate::compiler::lexer::lexer;
+
+mod lexer;
+
+pub fn compile(path: &Path) -> io::Result<&str> {
     println!("compiling started at {:?}!", path);
 
     let config_file_path = path.join("turkey.toml");
@@ -13,5 +17,9 @@ pub fn build(path: &Path) -> io::Result<&str> {
         return Ok("main.tky doesnt exist!");
     }
 
-    return Ok("compiled");
+    let main_content = fs::read_to_string(main_file_path)?;
+
+    lexer(&main_content);
+
+    return Ok("string");
 }

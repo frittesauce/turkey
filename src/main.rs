@@ -1,11 +1,11 @@
 mod args;
-mod build;
+mod compiler;
 mod create;
 
 use args::CmdArgs;
 use clap::Parser;
 
-use crate::build::build;
+use crate::compiler::compile;
 use crate::create::init::init;
 use crate::create::new::new;
 
@@ -30,7 +30,7 @@ fn main() {
                 Some(p) => p,
                 None => std::env::current_dir().unwrap(),
             };
-            let res = build(&path);
+            let res = compile(&path);
             println!("{:?}", res.unwrap())
         }
 
