@@ -3,6 +3,7 @@ use crate::common::position::PositionRange;
 pub struct Token {
     pub token_type: TokenType,
     pub position: PositionRange,
+    pub string: String,
 }
 
 pub enum TokenType {

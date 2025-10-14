@@ -1,6 +1,8 @@
-use crate::{common::position::Position, compiler::lexer::reader::character::Character};
+use crate::common::position::{Position, Span};
 
-pub mod character;
+pub mod next;
+
+pub type Character = Span<char>;
 
 pub struct Reader {
     pub chars: Vec<Character>,
@@ -40,7 +42,7 @@ impl Reader {
 
             let position = Position::new(line, col, character);
 
-            output.push(Character::new(char, position));
+            output.push(Character::new(char, position.to_range()));
 
             if newline {
                 line += 1;
@@ -60,5 +62,9 @@ impl Reader {
 
     pub fn peek(&self) -> Option<&Character> {
         self.chars.last()
+    }
+
+    pub fn second_peek(&self) -> Option<&Character> {
+        self.chars.get(self.chars.len() - 2)
     }
 }
