@@ -8,7 +8,18 @@ impl Reader {
                 None => return None,
             };
 
-            return match start.raw {};
+            return match start.raw {
+                '"' | '\'' => self.parse_string(),
+
+                char if char.is_ascii_digit() => self.parse_number(),
+
+                char if char.is_whitespace() => {
+                    self.advance();
+                    continue;
+                }
+
+                _ => todo!(),
+            };
         }
     }
 }

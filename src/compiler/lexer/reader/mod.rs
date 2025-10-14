@@ -1,6 +1,8 @@
 use crate::common::position::{Position, Span};
 
 pub mod next;
+pub mod number;
+pub mod string;
 
 pub type Character = Span<char>;
 

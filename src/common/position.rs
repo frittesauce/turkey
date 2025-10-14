@@ -31,6 +31,10 @@ impl PositionRange {
     pub fn new(start: Position, end: Position) -> Self {
         return Self { end, start };
     }
+
+    pub fn set_end(&mut self, position: Position) {
+        self.end = position;
+    }
 }
 
 pub struct Span<T = ()> {

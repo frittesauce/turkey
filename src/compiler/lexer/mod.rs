@@ -12,5 +12,9 @@ pub fn lexer(source: &str) -> Vec<Token> {
 
     println!("{:#?}", reader.chars);
 
+    loop {
+        println!("{:#?}", reader.next());
+    }
+
     todo!()
 }
