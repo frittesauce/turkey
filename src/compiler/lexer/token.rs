@@ -1,3 +1,5 @@
+use crate::common::position::PositionRange;
+
 pub struct Token {
     pub token_type: TokenType,
     pub position: PositionRange,
@@ -92,15 +94,4 @@ pub enum TokenType {
     Integer,    // int
     Float,      // float
     Identifier, // identifier
-}
-
-struct PositionRange {
-    pub start: Position,
-    pub end: Position,
-}
-
-struct Position {
-    pub line: usize,
-    pub column: usize,
-    pub character: usize,
 }

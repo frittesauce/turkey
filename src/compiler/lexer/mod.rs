@@ -1,8 +1,11 @@
-use crate::compiler::lexer::token::Token;
-mod token;
+use crate::compiler::lexer::{reader::Reader, token::Token};
+pub mod reader;
+pub mod token;
 
 pub fn lexer(source: &str) -> Vec<Token> {
-    println!("we strang {:#}", source);
+    let mut reader = Reader::new(source);
+
+    println!("{:#?}", reader.chars);
 
     todo!()
 }
