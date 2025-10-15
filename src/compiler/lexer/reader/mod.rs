@@ -1,7 +1,9 @@
 use crate::common::position::{Position, Span};
 
+pub mod identifier;
 pub mod next;
 pub mod number;
+pub mod operators;
 pub mod string;
 
 pub type Character = Span<char>;

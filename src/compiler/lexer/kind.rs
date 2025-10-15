@@ -7,6 +7,5 @@ pub enum LexerKind {
     String(LocatedString),
     Identifier(LocatedString),
     Integer(LocatedString),
-    Float(LocatedString),
     Operators(Vec<Character>),
 }

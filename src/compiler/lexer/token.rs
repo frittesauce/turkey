@@ -1,11 +1,23 @@
 use crate::common::position::PositionRange;
 
+#[derive(Debug)]
 pub struct Token {
     pub token_type: TokenType,
     pub position: PositionRange,
     pub string: String,
 }
 
+impl Token {
+    pub fn new(token_type: TokenType, position: PositionRange, string: String) -> Self {
+        return Self {
+            token_type,
+            position,
+            string,
+        };
+    }
+}
+
+#[derive(Debug)]
 pub enum TokenType {
     EOF,
     Unknown,

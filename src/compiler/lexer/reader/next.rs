@@ -13,10 +13,14 @@ impl Reader {
 
                 char if char.is_ascii_digit() => self.parse_number(),
 
+                char if char.is_ascii_alphabetic() || char == '_' => self.parse_identifier(),
+
                 char if char.is_whitespace() => {
                     self.advance();
                     continue;
                 }
+
+                char if char.is_ascii_punctuation() => self.parse_operators(),
 
                 _ => todo!(),
             };
