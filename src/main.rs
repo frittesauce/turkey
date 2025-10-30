@@ -1,50 +1,20 @@
-mod args;
-pub mod common;
-mod compiler;
-mod create;
-
-use args::CmdArgs;
-use clap::Parser;
+use std::{env, path::Path, process};
 
 use crate::compiler::compile;
-use crate::create::init::init;
-use crate::create::new::new;
+
+pub mod compiler;
 
 fn main() {
-    let args = CmdArgs::parse();
+    println!("welcome to turkey! dont use this language!");
 
-    match args.command {
-        args::Cmd::New(commands) => {
-            let res = new(&commands.name);
-            match res {
-                Err(error) => {
-                    eprintln!("{:#}", error);
-                }
-                Ok(()) => {
-                    println!("made new project succesfully!")
-                }
-            }
-        }
+    let args: Vec<String> = env::args().collect();
 
-        args::Cmd::Build { path } => {
-            let path = match path {
-                Some(p) => p,
-                None => std::env::current_dir().unwrap(),
-            };
-            let res = compile(&path);
-            println!("{:?}", res.unwrap())
-        }
-
-        args::Cmd::Init => {
-            let res = init();
-            match res {
-                Err(error) => {
-                    eprintln!("{:#}", error);
-                }
-                Ok(()) => {
-                    println!("made new project succesfully!")
-                }
-            }
-        }
+    if args.len() < 2 {
+        eprintln!("Usage: {} <filename>", args[0]);
+        process::exit(1);
     }
+
+    let filename = &args[1];
+
+    compile(filename);
 }

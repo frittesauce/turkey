@@ -1,25 +1,12 @@
-use std::{fs, io, path::Path};
-
-use crate::compiler::lexer::lexer;
+use std::{fs, process};
 
 mod lexer;
 
-pub fn compile(path: &Path) -> io::Result<&str> {
-    println!("compiling started at {:?}!", path);
+pub fn compile(path: &str) {
+    let content = fs::read_to_string(path).unwrap_or_else(|err| {
+        eprintln!("Error reading {}: {}", path, err);
+        process::exit(1);
+    });
 
-    let config_file_path = path.join("turkey.toml");
-    let main_file_path = path.join("src/main.tky");
-    if !config_file_path.exists() {
-        return Ok("config file doesnt exist !");
-    }
-
-    if !main_file_path.exists() {
-        return Ok("main.tky doesnt exist!");
-    }
-
-    let main_content = fs::read_to_string(main_file_path)?;
-
-    lexer(&main_content);
-
-    return Ok("string");
+    println!("read the file: {}", content)
 }
