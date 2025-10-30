@@ -1,5 +1,0 @@
-name = "testProj"
-version = "0.1.0"
-edition = "2024"
-src = "src/src/"
-main = "notmain"

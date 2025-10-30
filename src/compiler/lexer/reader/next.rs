@@ -1,20 +1,22 @@
 use crate::compiler::lexer::{reader::Reader, token::Token};
 
 impl Reader {
-    pub fn next(&mut self) -> Option<Token> {
+    pub fn next(&mut self) -> Token {
+        println!("new token!");
         loop {
             let chr = match self.peek() {
                 Some(c) => c,
-                None => return None,
+                None => return todo!(),
             };
 
-            let kind = match chr.value {
+            return match chr.value {
                 '"' => self.parse_string(),
+                '\'' => self.parse_char(),
                 char if char.is_whitespace() => {
                     self.advance();
                     continue;
                 }
-                _ => continue,
+                _ => todo!(),
             };
         }
     }

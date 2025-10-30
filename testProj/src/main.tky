@@ -1,7 +1,0 @@
-"meow"
-211
-"the 67 kid did WHAT?"
-677
-fun main() {
-  prtin("hello world!");
-}

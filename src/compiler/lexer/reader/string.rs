@@ -1,6 +1,9 @@
 use crate::{
     common::position::Span,
-    compiler::lexer::{reader::Reader, token::TokenKind},
+    compiler::lexer::{
+        reader::Reader,
+        token::{Token, TokenKind},
+    },
 };
 
 impl Reader {
@@ -76,7 +79,7 @@ impl Reader {
         };
     }
 
-    pub fn parse_string(&mut self) -> Span<TokenKind> {
+    pub fn parse_string(&mut self) -> Token {
         let mut position_tracker = self.advance().unwrap();
         let mut string = String::new();
 
@@ -99,18 +102,103 @@ impl Reader {
                             .set_end(decoded.position_range.end);
                     }
                     Err(error_message) => {
-                        return Span::new(
-                            error_message.position_range,
+                        return Token::new(
                             TokenKind::Error(error_message.value),
+                            error_message.position_range,
+                            string,
                         );
                     }
                 }
                 continue;
             }
 
+            if char.value == '"' {
+                break;
+            }
+
             string.push(char.value);
         }
+        return Token::new(
+            TokenKind::StringLiteral(string),
+            position_tracker.position_range,
+            "".to_string(),
+        );
+    }
 
-        todo!()
+    pub fn parse_char(&mut self) -> Token {
+        let mut position_tracker = self.advance().unwrap();
+        let mut string = String::new();
+
+        string.push(position_tracker.value);
+
+        let char = match self.advance() {
+            Some(c) => c,
+            None => panic!("something went wrong whilest parsing a char!"),
+        };
+
+        position_tracker
+            .position_range
+            .set_end(char.position_range.end);
+
+        match char.value {
+            '\\' => match self.parse_escape() {
+                Ok(decoded) => {
+                    position_tracker
+                        .position_range
+                        .set_end(decoded.position_range.end);
+
+                    string.push(decoded.value);
+
+                    return Token::new(
+                        TokenKind::StringLiteral(decoded.value.to_string()),
+                        position_tracker.position_range,
+                        string,
+                    );
+                }
+                Err(error_message) => {
+                    return Token::new(
+                        TokenKind::Error(error_message.value),
+                        error_message.position_range,
+                        string,
+                    );
+                }
+            },
+            '\'' => {
+                return Token::new(
+                    TokenKind::CharLiteral("".to_string()),
+                    position_tracker.position_range,
+                    "".to_string(),
+                );
+            }
+
+            other => {
+                string.push(other);
+
+                match self.advance().unwrap() {
+                    c if c.value == '\'' => {
+                        position_tracker
+                            .position_range
+                            .set_end(c.position_range.end);
+
+                        return Token::new(
+                            TokenKind::CharLiteral(other.to_string()),
+                            position_tracker.position_range,
+                            other.to_string(),
+                        );
+                    }
+                    c => {
+                        position_tracker
+                            .position_range
+                            .set_end(c.position_range.end);
+
+                        return Token::new(
+                            TokenKind::Error("Char never closes!".to_string()),
+                            position_tracker.position_range,
+                            string,
+                        );
+                    }
+                }
+            }
+        }
     }
 }

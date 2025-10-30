@@ -8,11 +8,10 @@ pub fn lexer(src: &str) -> Vec<Token> {
 
     let mut reader = Reader::new(src);
 
+    println!("going to start looping through chars for the tokens now!");
     loop {
-        let token = match reader.next() {
-            Some(tk) => tk,
-            None => break,
-        };
+        let token = reader.next();
+        println!("{}", token);
 
         tokens.push(token);
     }
