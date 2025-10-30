@@ -2,6 +2,7 @@ use std::{env, path::Path, process};
 
 use crate::compiler::compile;
 
+pub mod common;
 pub mod compiler;
 
 fn main() {

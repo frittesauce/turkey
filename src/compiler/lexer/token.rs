@@ -1,5 +1,25 @@
 use std::fmt::{self, Display};
 
+use crate::common::position::PositionRange;
+
+#[derive(Debug)]
+pub struct Token {
+    pub token_kind: TokenKind,
+    pub position_range: PositionRange,
+    pub string: String,
+}
+
+impl Token {
+    pub fn new(token_kind: TokenKind, position_range: PositionRange, string: String) -> Self {
+        return Self {
+            token_kind,
+            position_range,
+            string,
+        };
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
 pub enum TokenKind {
     Plus,
     Minus,
