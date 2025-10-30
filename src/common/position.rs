@@ -34,13 +34,16 @@ impl PositionRange {
 }
 
 pub struct Span<T = ()> {
-    pub position: Position,
+    pub position_range: PositionRange,
     pub value: T,
 }
 
 impl<T> Span<T> {
-    pub fn new(position: Position, value: T) -> Self {
-        return Self { position, value };
+    pub fn new(position_range: PositionRange, value: T) -> Self {
+        return Self {
+            position_range,
+            value,
+        };
     }
 }
 
@@ -62,6 +65,6 @@ impl std::fmt::Display for PositionRange {
 
 impl<T: Debug> Debug for Span<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:#?} (){})", self.value, self.position)
+        write!(f, "{:#?} (){})", self.value, self.position_range)
     }
 }
