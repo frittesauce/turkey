@@ -1,4 +1,4 @@
-use std::{env, path::Path, process};
+use std::{env, process};
 
 use crate::compiler::compile;
 

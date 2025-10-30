@@ -85,6 +85,16 @@ pub enum TokenKind {
     Error(String),
 }
 
+impl Display for Token {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "Token: {}\nRaw: {}\nLocation: {}",
+            self.token_kind, self.string, self.position_range
+        )
+    }
+}
+
 impl Display for TokenKind {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use TokenKind::*;

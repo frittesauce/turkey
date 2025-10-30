@@ -1,4 +1,7 @@
-use crate::common::position::{self, Position, Span};
+use crate::common::position::{Position, Span};
+
+mod next;
+mod string;
 
 const TAB_SIZE: usize = 4;
 
@@ -52,9 +55,5 @@ impl Reader {
 
     pub fn peek(&self) -> Option<&Character> {
         self.chars.last()
-    }
-
-    pub fn second_peek(&self) -> Option<&Character> {
-        self.chars.get(self.chars.len() - 2)
     }
 }

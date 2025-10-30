@@ -6,7 +6,18 @@ pub mod token;
 pub fn lexer(src: &str) -> Vec<Token> {
     let mut tokens: Vec<Token> = Vec::new();
 
-    let reader = Reader::new(src);
+    let mut reader = Reader::new(src);
+
+    loop {
+        let token = match reader.next() {
+            Some(tk) => tk,
+            None => break,
+        };
+
+        tokens.push(token);
+    }
+
+    println!("{:?}", tokens);
 
     return tokens;
 }

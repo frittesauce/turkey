@@ -1,4 +1,4 @@
-use std::{fmt::Debug, path::Display};
+use std::fmt::Debug;
 
 #[derive(Debug)]
 pub struct PositionRange {

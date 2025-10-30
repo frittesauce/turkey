@@ -1,5 +1,7 @@
 use std::{fs, process};
 
+use crate::compiler::lexer::lexer;
+
 mod lexer;
 
 pub fn compile(path: &str) {
@@ -8,5 +10,5 @@ pub fn compile(path: &str) {
         process::exit(1);
     });
 
-    println!("read the file: {}", content)
+    let tokens = lexer(&content);
 }
