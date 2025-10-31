@@ -86,6 +86,70 @@ pub enum TokenKind {
     Error(String),
 }
 
+pub fn match_operator(str: &str) -> Option<TokenKind> {
+    use TokenKind::*;
+
+    let kind = match str {
+        "+" => Plus,
+        "-" => Minus,
+        "*" => Star,
+        "/" => Slash,
+        "%" => Modulus,
+
+        "++" => PlusPlus,
+        "--" => MinusMinus,
+
+        "=" => Equals,
+        "+=" => PlusEquals,
+        "-=" => MinusEquals,
+        "*=" => StarEquals,
+        "/=" => SlashEquals,
+        "%=" => ModulusEquals,
+
+        "==" => EqualsEquals,
+        "!=" => BangEquals,
+        "<" => Lesser,
+        ">" => More,
+        "<=" => LesserEquals,
+        ">=" => MoreEquals,
+
+        "&&" => AndAnd,
+        "||" => OrOr,
+        "!" => Bang,
+
+        "&" => And,
+        "|" => Or,
+        "^" => Xor,
+        "<<" => LeftShift,
+        ">>" => RightShift,
+        ">>=" => RightShiftEqual,
+        "<<=" => LeftShiftEqual,
+        "&=" => AndEqual,
+        "|=" => OrEqual,
+        "^=" => XorEqual,
+
+        "(" => OpenParams,
+        ")" => CloseParams,
+        "{{" => OpenCurlyBracket,
+        "}}" => CloseCurlyBracket,
+        "[" => OpenBracket,
+        "]" => CloseBracket,
+
+        ";" => Semicolon,
+        "," => Comma,
+        "~" => Tilda,
+        ":" => Colon,
+        "." => Period,
+        "->" => Arrow,
+        "=>" => FatArrow,
+        "#" => Hashtag,
+
+        _ => return None,
+    };
+
+    return Some(kind);
+}
+
 impl Display for Token {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(

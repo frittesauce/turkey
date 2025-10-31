@@ -1,4 +1,7 @@
-use crate::compiler::lexer::{reader::Reader, token::Token};
+use crate::compiler::lexer::{
+    reader::Reader,
+    token::{Token, match_operator},
+};
 
 impl Reader {
     pub fn next(&mut self) -> Token {
@@ -12,7 +15,7 @@ impl Reader {
             return match chr.value {
                 '"' => self.parse_string(),
                 '\'' => self.parse_char(),
-                char if char.is_ascii_punctuation() => self.parse_operator(),
+                char if match_operator(char.to_string().as_str()) != None => self.parse_operator(),
 
                 char if char.is_whitespace() => {
                     self.advance();

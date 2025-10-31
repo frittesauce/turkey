@@ -57,4 +57,19 @@ impl Reader {
     pub fn peek(&self) -> Option<&Character> {
         self.chars.last()
     }
+
+    pub fn advance_if<C>(&mut self, condition: C) -> Option<Character>
+    where
+        C: FnOnce(&char) -> bool,
+    {
+        let peek = match self.peek() {
+            Some(p) => p,
+            None => return None,
+        };
+
+        if condition(&peek.value) {
+            return self.advance();
+        }
+        return None;
+    }
 }

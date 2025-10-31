@@ -1,6 +1,6 @@
 use crate::compiler::lexer::{
     reader::Reader,
-    token::{Token, TokenKind},
+    token::{Token, TokenKind, match_operator},
 };
 
 impl Reader {
@@ -8,43 +8,28 @@ impl Reader {
         let mut location = self.advance().unwrap();
         let mut string = String::new();
 
+        let kind: TokenKind;
+
         string.push(location.value);
 
         loop {
-            let char = match self.advance() {
+            let char = match self.advance_if(|c| -> bool {
+                let mut temp_string = string.clone();
+                temp_string.push(*c);
+
+                return match_operator(temp_string.as_str()) != None;
+            }) {
                 Some(c) => c,
-                None => break,
+                None => {
+                    kind = match_operator(&string).unwrap();
+                    break;
+                }
             };
+
+            string.push(char.value);
+            location.position_range.set_end(char.position_range.end);
         }
 
-        return match string.as_str() {
-            "<<=" => Token::new(TokenKind::LeftShiftEqual, location.position_range, string),
-            ">>=" => Token::new(TokenKind::RightShiftEqual, location.position_range, string),
-            "&=" => Token::new(TokenKind::AndEqual, location.position_range, string),
-            "^=" => Token::new(TokenKind::XorEqual, location.position_range, string),
-            "|=" => Token::new(TokenKind::OrEqual, location.position_range, string),
-
-            "+=" => Token::new(TokenKind::PlusEquals, location.position_range, string),
-            "-=" => Token::new(TokenKind::MinusEquals, location.position_range, string),
-            "*=" => Token::new(TokenKind::StarEquals, location.position_range, string),
-            "/=" => Token::new(TokenKind::SlashEquals, location.position_range, string),
-            "%=" => Token::new(TokenKind::ModulusEquals, location.position_range, string),
-
-            ">=" => Token::new(TokenKind::MoreEquals, location.position_range, string),
-            "<=" => Token::new(TokenKind::LesserEquals, location.position_range, string),
-            "!=" => Token::new(TokenKind::LesserEquals, location.position_range, string),
-            "==" => Token::new(TokenKind::EqualsEquals, location.position_range, string),
-
-            "<<" => Token::new(TokenKind::LeftShift, location.position_range, string),
-            ">>" => Token::new(TokenKind::RightShift, location.position_range, string),
-
-            "=>" => Token::new(TokenKind::FatArrow, location.position_range, string),
-            "->" => Token::new(TokenKind::Arrow, location.position_range, string),
-            _ => Token::new(
-                TokenKind::Error("oppperator unkown!".to_string()),
-                location.position_range,
-                string,
-            ),
-        };
+        return Token::new(kind, location.position_range, string);
     }
 }
