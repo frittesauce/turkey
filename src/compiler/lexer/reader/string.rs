@@ -7,11 +7,13 @@ use crate::{
 };
 
 impl Reader {
-    fn parse_escape(&mut self) -> Result<Span<char>, Span<String>> {
+    fn parse_escape(&mut self, str: &mut String) -> Result<Span<char>, Span<String>> {
         let next = match self.advance() {
             Some(chr) => chr,
             None => panic!("Error something went wrong when parsing an escape thing"),
         };
+
+        str.push(next.value);
 
         return match next.value {
             'n' => Ok(Span::new(next.position_range, '\n')),
@@ -32,6 +34,7 @@ impl Reader {
                     match self.peek() {
                         Some(p) if p.value.is_ascii_hexdigit() => {
                             d = self.advance().unwrap();
+                            str.push(d.value);
                             val = val * 16 + d.value.to_digit(16).unwrap();
                             count += 1;
                         }
@@ -60,6 +63,7 @@ impl Reader {
                     match self.peek() {
                         Some(p) if p.value.is_digit(8) => {
                             d = self.advance().unwrap();
+                            str.push(d.value);
                             val = val * 8 + d.value.to_digit(8).unwrap();
                             count += 1;
                         }
@@ -82,6 +86,9 @@ impl Reader {
     pub fn parse_string(&mut self) -> Token {
         let mut position_tracker = self.advance().unwrap();
         let mut string = String::new();
+        let mut raw = String::new();
+
+        raw.push(position_tracker.value);
 
         loop {
             let char = match self.advance() {
@@ -89,77 +96,78 @@ impl Reader {
                 None => break,
             };
 
+            raw.push(char.value);
+
             position_tracker
                 .position_range
                 .set_end(char.position_range.end);
 
-            if char.value == '\\' {
-                match self.parse_escape() {
-                    Ok(decoded) => {
-                        string.push(decoded.value);
-                        position_tracker
-                            .position_range
-                            .set_end(decoded.position_range.end);
+            match char.value {
+                '\\' => {
+                    match self.parse_escape(&mut raw) {
+                        Ok(decoded) => {
+                            string.push(decoded.value);
+                            position_tracker
+                                .position_range
+                                .set_end(decoded.position_range.end);
+                        }
+                        Err(error_message) => {
+                            return Token::new(
+                                TokenKind::Error(error_message.value),
+                                error_message.position_range,
+                                string,
+                            );
+                        }
                     }
-                    Err(error_message) => {
-                        return Token::new(
-                            TokenKind::Error(error_message.value),
-                            error_message.position_range,
-                            string,
-                        );
-                    }
+                    continue;
                 }
-                continue;
-            }
+                '"' => {
+                    break;
+                }
 
-            if char.value == '"' {
-                break;
+                char => {
+                    string.push(char);
+                }
             }
-
-            string.push(char.value);
         }
         return Token::new(
             TokenKind::StringLiteral(string),
             position_tracker.position_range,
-            "".to_string(),
+            raw,
         );
     }
 
     pub fn parse_char(&mut self) -> Token {
         let mut position_tracker = self.advance().unwrap();
         let mut string = String::new();
+        let mut raw = String::new();
 
-        string.push(position_tracker.value);
+        raw.push(position_tracker.value);
 
         let char = match self.advance() {
             Some(c) => c,
             None => panic!("something went wrong whilest parsing a char!"),
         };
+        raw.push(char.value);
 
         position_tracker
             .position_range
             .set_end(char.position_range.end);
 
         match char.value {
-            '\\' => match self.parse_escape() {
+            '\\' => match self.parse_escape(&mut raw) {
                 Ok(decoded) => {
                     position_tracker
                         .position_range
                         .set_end(decoded.position_range.end);
 
                     string.push(decoded.value);
-
-                    return Token::new(
-                        TokenKind::StringLiteral(decoded.value.to_string()),
-                        position_tracker.position_range,
-                        string,
-                    );
                 }
                 Err(error_message) => {
                     return Token::new(
                         TokenKind::Error(error_message.value),
                         error_message.position_range,
-                        string,
+                        raw,
                     );
                 }
             },
@@ -167,38 +175,51 @@ impl Reader {
                 return Token::new(
                     TokenKind::CharLiteral("".to_string()),
                     position_tracker.position_range,
-                    "".to_string(),
+                    "''".to_string(),
                 );
             }
 
             other => {
                 string.push(other);
-
-                match self.advance().unwrap() {
-                    c if c.value == '\'' => {
-                        position_tracker
-                            .position_range
-                            .set_end(c.position_range.end);
-
-                        return Token::new(
-                            TokenKind::CharLiteral(other.to_string()),
-                            position_tracker.position_range,
-                            other.to_string(),
-                        );
-                    }
-                    c => {
-                        position_tracker
-                            .position_range
-                            .set_end(c.position_range.end);
-
-                        return Token::new(
-                            TokenKind::Error("Char never closes!".to_string()),
-                            position_tracker.position_range,
-                            string,
-                        );
-                    }
-                }
             }
         }
+
+        match self.peek().unwrap() {
+            c if c.value == '\'' => {
+                let c = self.advance().unwrap();
+                position_tracker
+                    .position_range
+                    .set_end(c.position_range.end);
+
+                raw.push(c.value);
+            }
+            _ => {
+                loop {
+                    let c = match self.advance() {
+                        Some(c) => c,
+                        None => break,
+                    };
+                    position_tracker
+                        .position_range
+                        .set_end(c.position_range.end);
+                    raw.push(c.value);
+
+                    if c.value == '\'' {
+                        break;
+                    };
+                }
+
+                return Token::new(
+                    TokenKind::Error("Char can only be one character!".to_string()),
+                    position_tracker.position_range,
+                    raw,
+                );
+            }
+        }
+        return Token::new(
+            TokenKind::CharLiteral(string),
+            position_tracker.position_range,
+            raw,
+        );
     }
 }
