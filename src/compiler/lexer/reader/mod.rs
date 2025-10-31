@@ -1,6 +1,7 @@
 use crate::common::position::{Position, Span};
 
 mod next;
+mod operator;
 mod string;
 
 const TAB_SIZE: usize = 4;

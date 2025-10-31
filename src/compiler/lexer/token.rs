@@ -71,6 +71,7 @@ pub enum TokenKind {
     Colon,
     Period,
     Arrow,
+    FatArrow,
     Hashtag,
 
     Eof,
@@ -124,7 +125,7 @@ impl Display for TokenKind {
             SlashEquals => write!(f, "/="),
             ModulusEquals => write!(f, "%="),
 
-            EqualsEquals => write!(f, "=>"),
+            EqualsEquals => write!(f, "=="),
             BangEquals => write!(f, "!="),
             Lesser => write!(f, "<"),
             More => write!(f, ">"),
@@ -160,6 +161,7 @@ impl Display for TokenKind {
             Colon => write!(f, ":"),
             Period => write!(f, "."),
             Arrow => write!(f, "->"),
+            FatArrow => write!(f, "=>"),
             Hashtag => write!(f, "#"),
 
             Eof => write!(f, "<eof>"),
