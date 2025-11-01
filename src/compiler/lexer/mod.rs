@@ -11,7 +11,6 @@ pub fn lexer(src: &str) -> Vec<Token> {
     println!("going to start looping through chars for the tokens now!");
     loop {
         let token = reader.next();
-        println!("{}", token);
 
         tokens.push(token);
     }

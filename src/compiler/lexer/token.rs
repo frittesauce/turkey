@@ -84,6 +84,7 @@ pub enum TokenKind {
     StringLiteral(String),
 
     Error(String),
+    Unknown,
 }
 
 pub fn match_operator(str: &str) -> Option<TokenKind> {
@@ -130,8 +131,8 @@ pub fn match_operator(str: &str) -> Option<TokenKind> {
 
         "(" => OpenParams,
         ")" => CloseParams,
-        "{{" => OpenCurlyBracket,
-        "}}" => CloseCurlyBracket,
+        "{" => OpenCurlyBracket,
+        "}" => CloseCurlyBracket,
         "[" => OpenBracket,
         "]" => CloseBracket,
 
@@ -229,6 +230,7 @@ impl Display for TokenKind {
             Hashtag => write!(f, "#"),
 
             Eof => write!(f, "<eof>"),
+            Unknown => write!(f, "unkown charcter!"),
         }
     }
 }
