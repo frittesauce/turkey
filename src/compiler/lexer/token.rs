@@ -73,10 +73,48 @@ pub enum TokenKind {
     Arrow,
     FatArrow,
     Hashtag,
+    Dollar,
 
     Eof,
 
-    KeyWord(&'static str),
+    // keywords!
+    Auto,
+    Break,
+    Continue,
+    Case,
+    Default,
+    If,
+    Static,
+    Float,
+    For,
+    Goto,
+    Return,
+    Double,
+    Else,
+    Enum,
+    While,
+    Unsigned,
+    Switch,
+    Sizeof,
+    Union,
+    Struct,
+    Signed,
+    Typedef,
+    Extern,
+    Short,
+    Void,
+    Volatile,
+    Char,
+    Int,
+    Long,
+    Register,
+    Do,
+
+    Fun,
+    Returns,
+    Let,
+    Const,
+
     Identifier(String),
     IntLiteral(String),
     FloatLiteral(String),
@@ -86,6 +124,8 @@ pub enum TokenKind {
     Error(String),
     Unknown,
 }
+
+pub fn match_keyword(str: &str) -> Option<TokenKind> {}
 
 pub fn match_operator(str: &str) -> Option<TokenKind> {
     use TokenKind::*;
@@ -144,6 +184,7 @@ pub fn match_operator(str: &str) -> Option<TokenKind> {
         "->" => Arrow,
         "=>" => FatArrow,
         "#" => Hashtag,
+        "$" => Dollar,
 
         _ => return None,
     };
@@ -165,7 +206,6 @@ impl Display for TokenKind {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use TokenKind::*;
         match self {
-            KeyWord(s) => write!(f, "Keyword: {}", s),
             Identifier(s) => write!(f, "Identifier: {}", s),
             IntLiteral(s) => write!(f, "Int: {}", s),
             FloatLiteral(s) => write!(f, "Float: {}", s),
@@ -228,6 +268,43 @@ impl Display for TokenKind {
             Arrow => write!(f, "->"),
             FatArrow => write!(f, "=>"),
             Hashtag => write!(f, "#"),
+            Dollar => write!(f, "$"),
+
+            Auto => write!(f, "auto"),
+            Break => write!(f, "break"),
+            Continue => write!(f, "continue"),
+            Case => write!(f, "case"),
+            Default => write!(f, "default"),
+            If => write!(f, "if"),
+            Static => write!(f, "static"),
+            Float => write!(f, "float"),
+            For => write!(f, "for"),
+            Goto => write!(f, "goto"),
+            Return => write!(f, "return"),
+            Double => write!(f, "double"),
+            Else => write!(f, "else"),
+            Enum => write!(f, "enum"),
+            While => write!(f, "while"),
+            Unsigned => write!(f, "unsigned"),
+            Switch => write!(f, "switch"),
+            Sizeof => write!(f, "sizeof"),
+            Union => write!(f, "union"),
+            Struct => write!(f, "struct"),
+            Signed => write!(f, "signed"),
+            Typedef => write!(f, "typedef"),
+            Extern => write!(f, "extern"),
+            Short => write!(f, "short"),
+            Void => write!(f, "void"),
+            Volatile => write!(f, "volatile"),
+            Char => write!(f, "char"),
+            Int => write!(f, "int"),
+            Long => write!(f, "long"),
+            Register => write!(f, "register"),
+            Do => write!(f, "do"),
+            Fun => write!(f, "fun"),
+            Returns => write!(f, "return"),
+            Let => write!(f, "let"),
+            Const => write!(f, "const"),
 
             Eof => write!(f, "<eof>"),
             Unknown => write!(f, "unkown charcter!"),

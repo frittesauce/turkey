@@ -1,5 +1,6 @@
 use crate::common::position::{Position, Span};
 
+mod identifier;
 mod next;
 mod number;
 mod operator;
