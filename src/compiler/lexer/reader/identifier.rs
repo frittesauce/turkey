@@ -1,6 +1,6 @@
 use crate::compiler::lexer::{
     reader::Reader,
-    token::{Token, TokenKind},
+    token::{Token, TokenKind, match_keyword},
 };
 
 impl Reader {
@@ -21,11 +21,15 @@ impl Reader {
                 .position_range
                 .set_end(char.position_range.end);
         }
-
-        return Token::new(
-            TokenKind::Identifier(raw.clone()),
-            postion_tracker.position_range,
-            raw,
-        );
+        match match_keyword(raw.as_str()) {
+            Some(kind) => return Token::new(kind, postion_tracker.position_range, raw),
+            None => {
+                return Token::new(
+                    TokenKind::Identifier(raw.clone()),
+                    postion_tracker.position_range,
+                    raw,
+                );
+            }
+        }
     }
 }

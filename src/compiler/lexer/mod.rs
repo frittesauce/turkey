@@ -12,6 +12,8 @@ pub fn lexer(src: &str) -> Vec<Token> {
     loop {
         let token = reader.next();
 
+        println!("{}\n", token);
+
         tokens.push(token);
     }
 

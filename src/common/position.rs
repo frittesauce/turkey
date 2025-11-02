@@ -57,8 +57,8 @@ impl std::fmt::Display for PositionRange {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(
             f,
-            "col {}-{}, ln {}-{}",
-            self.start.column, self.end.column, self.start.line, self.end.line
+            "ln: {}-{}, col: {}-{}",
+            self.start.line, self.end.line, self.start.column, self.end.column
         )
     }
 }

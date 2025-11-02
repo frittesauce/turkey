@@ -121,11 +121,55 @@ pub enum TokenKind {
     CharLiteral(String),
     StringLiteral(String),
 
+    Comment(String),
     Error(String),
     Unknown,
 }
 
-pub fn match_keyword(str: &str) -> Option<TokenKind> {}
+pub fn match_keyword(str: &str) -> Option<TokenKind> {
+    use TokenKind::*;
+
+    let kind = match str {
+        "auto" => Auto,
+        "break" => Break,
+        "continue" => Continue,
+        "case" => Case,
+        "default" => Default,
+        "if" => If,
+        "static" => Static,
+        "float" => Float,
+        "for" => For,
+        "goto" => Goto,
+        "return" => Return,
+        "double" => Double,
+        "else" => Else,
+        "enum" => Enum,
+        "while" => While,
+        "unsigned" => Unsigned,
+        "switch" => Switch,
+        "sizeof" => Sizeof,
+        "union" => Union,
+        "struct" => Struct,
+        "signed" => Signed,
+        "typedef" => Typedef,
+        "extern" => Extern,
+        "short" => Short,
+        "void" => Void,
+        "volatile" => Volatile,
+        "char" => Char,
+        "int" => Int,
+        "long" => Long,
+        "register" => Register,
+        "do" => Do,
+        "fun" => Fun,
+        "returns" => Returns,
+        "let" => Let,
+        "const" => Const,
+        _ => return None,
+    };
+
+    return Some(kind);
+}
 
 pub fn match_operator(str: &str) -> Option<TokenKind> {
     use TokenKind::*;
@@ -212,6 +256,7 @@ impl Display for TokenKind {
             CharLiteral(s) => write!(f, "Char: {}", s),
             StringLiteral(s) => write!(f, "String: {}", s),
 
+            Comment(s) => write!(f, "<Comment {}>", s),
             Error(s) => write!(f, "<error {}>", s),
 
             Plus => write!(f, "+"),
