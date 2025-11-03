@@ -121,7 +121,8 @@ pub enum TokenKind {
     CharLiteral(String),
     StringLiteral(String),
 
-    Comment(String),
+    SingleLineComment(String),
+    MultiLineComment(String),
     Error(String),
     Unknown,
 }
@@ -256,7 +257,8 @@ impl Display for TokenKind {
             CharLiteral(s) => write!(f, "Char: {}", s),
             StringLiteral(s) => write!(f, "String: {}", s),
 
-            Comment(s) => write!(f, "<Comment {}>", s),
+            SingleLineComment(s) => write!(f, "<Comment {}>", s),
+            MultiLineComment(s) => write!(f, "<Comment {}>", s),
             Error(s) => write!(f, "<error {}>", s),
 
             Plus => write!(f, "+"),

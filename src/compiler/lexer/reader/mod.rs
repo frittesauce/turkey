@@ -1,5 +1,6 @@
 use crate::common::position::{Position, Span};
 
+mod comments;
 mod identifier;
 mod next;
 mod number;
@@ -58,6 +59,10 @@ impl Reader {
 
     pub fn peek(&self) -> Option<&Character> {
         self.chars.last()
+    }
+
+    pub fn peek_second(&self) -> Option<&Character> {
+        self.chars.get(self.chars.len() - 2)
     }
 
     pub fn advance_if<C>(&mut self, condition: C) -> Option<Character>

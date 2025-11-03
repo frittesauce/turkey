@@ -14,8 +14,12 @@ impl Reader {
             };
 
             return match chr.value {
+                '/' if self.peek_second().unwrap().value == '/' => self.parse_single_comment(),
+                '/' if self.peek_second().unwrap().value == '*' => self.parse_multi_comment(),
+
                 '"' => self.parse_string(),
                 '\'' => self.parse_char(),
+
                 char if match_operator(char.to_string().as_str()) != None => self.parse_operator(),
                 char if char.is_digit(10) => self.parse_number(),
                 char if char.is_alphabetic() || char == '_' => self.parse_identifier(),
