@@ -19,10 +19,10 @@ pub fn lexer(src: &str) -> Vec<Token> {
             break;
         };
 
-        println!("{}\n", token);
-
         tokens.push(token);
     }
+
+    println!("{:#?}", tokens);
 
     return tokens;
 }
