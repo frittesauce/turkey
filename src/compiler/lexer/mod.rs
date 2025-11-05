@@ -1,4 +1,7 @@
-use crate::compiler::lexer::{reader::Reader, token::Token};
+use crate::compiler::lexer::{
+    reader::Reader,
+    token::{Token, TokenKind},
+};
 
 pub mod reader;
 pub mod token;
@@ -12,12 +15,16 @@ pub fn lexer(src: &str) -> Vec<Token> {
     loop {
         let token = reader.next();
 
+        if token.token_kind == TokenKind::Eof {
+            break;
+        };
+
         println!("{}\n", token);
 
         tokens.push(token);
     }
 
-    println!("{:?}", tokens);
+    println!("{:#?}", tokens);
 
     return tokens;
 }

@@ -1,12 +1,12 @@
 use std::fmt::Debug;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct PositionRange {
     pub start: Position,
     pub end: Position,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct Position {
     pub line: usize,
     pub column: usize,

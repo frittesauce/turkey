@@ -1,6 +1,9 @@
-use crate::compiler::lexer::{
-    reader::Reader,
-    token::{Token, TokenKind, match_operator},
+use crate::{
+    common::position::Position,
+    compiler::lexer::{
+        reader::Reader,
+        token::{Token, TokenKind, match_operator},
+    },
 };
 
 impl Reader {
@@ -9,7 +12,11 @@ impl Reader {
             let chr = match self.peek() {
                 Some(c) => c,
                 None => {
-                    todo!()
+                    return Token::new(
+                        TokenKind::Eof,
+                        Position::new(0, 0, 0).to_range(),
+                        "".to_string(),
+                    );
                 }
             };
 
