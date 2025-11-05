@@ -24,7 +24,5 @@ pub fn lexer(src: &str) -> Vec<Token> {
         tokens.push(token);
     }
 
-    println!("{:#?}", tokens);
-
     return tokens;
 }
