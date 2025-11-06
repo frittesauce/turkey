@@ -1,12 +1,12 @@
 use std::fmt::Debug;
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Default, Clone, PartialEq, Eq)]
 pub struct PositionRange {
     pub start: Position,
     pub end: Position,
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Default, PartialEq, Eq)]
 pub struct Position {
     pub line: usize,
     pub column: usize,
@@ -33,6 +33,7 @@ impl PositionRange {
     }
 }
 
+#[derive(Clone, PartialEq, Eq, Default)]
 pub struct Span<T = ()> {
     pub position_range: PositionRange,
     pub value: T,

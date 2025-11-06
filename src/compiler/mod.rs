@@ -1,6 +1,6 @@
 use std::{fs, process};
 
-use crate::compiler::lexer::lexer;
+use crate::compiler::lexer::{lexer, parser::parser};
 
 mod lexer;
 
@@ -11,4 +11,6 @@ pub fn compile(path: &str) {
     });
 
     let tokens = lexer(&content);
+
+    let ast = parser(tokens);
 }
