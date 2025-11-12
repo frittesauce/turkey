@@ -34,3 +34,62 @@ pub enum RawType {
 
     Other(Identifier),
 }
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum LiteralValue {
+    Int(i64),
+    Float(f64),
+    String(String),
+    Char(char),
+    Bool(bool),
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum BinaryOperator {
+    Add,    // +
+    Sub,    // -
+    Mul,    // *
+    Div,    // /
+    Mod,    // %
+    Eq,     // ==
+    Ne,     // !=
+    Lt,     // <
+    Gt,     // >
+    Le,     // <=
+    Ge,     // >=
+    And,    // &&
+    Or,     // ||
+    BitAnd, // &
+    BitOr,  // |
+    BitXor, // ^
+    Shr,    // >>
+    Shl,    // <<
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum AssignmentOperator {
+    Assign,       // =
+    AddAssign,    // +=
+    SubAssign,    // -=
+    MulAssign,    // *=
+    DivAssign,    // /=
+    ModAssign,    // %=
+    BitAndAssign, // &=
+    BitOrAssign,  // |=
+    BitXorAssign, // ^=
+    ShlAssign,    // <<=
+    ShrAssign,    // >>=
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum UnaryOperator {
+    Neg,     // -
+    Not,     // !
+    BitNot,  // ~
+    Deref,   // *
+    AddrOf,  // &
+    PreInc,  // ++x
+    PreDec,  // --x
+    PostInc, // x++
+    PostDec, // x--
+}

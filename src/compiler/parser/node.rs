@@ -1,11 +1,14 @@
 use crate::{
     common::position::Span,
-    compiler::parser::structs::{Identifier, Parameter, Type},
+    compiler::parser::structs::{
+        AssignmentOperator, BinaryOperator, Identifier, LiteralValue, Parameter, Type,
+        UnaryOperator,
+    },
 };
 
 pub type Node = Span<RawNode>;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq)]
 pub enum RawNode {
     FunctionDecl {
         identifier: Identifier,
@@ -44,77 +47,47 @@ pub enum RawNode {
         body: Box<Node>,
     },
 
+    For {
+        init: Option<Box<Node>>,
+        condition: Option<Box<Node>>,
+        increment: Option<Box<Node>>,
+        body: Box<Node>,
+    },
+
     Return(Option<Box<Node>>),
 
     BinaryOp {
         left: Box<Node>,
-        op: String,
+        op: BinaryOperator,
         right: Box<Node>,
     },
 
-    Asignment {
+    Assignment {
         target: Box<Node>,
-        op: AsignmentOperator,
+        op: AssignmentOperator,
         value: Box<Node>,
     },
 
     UnaryOp {
-        op: String,
+        op: UnaryOperator,
         expr: Box<Node>,
     },
 
-    Call {
-        identifier: Identifier,
-        argments: Vec<Node>,
+    MemberAccess {
+        base: Box<Node>,
+        field: Identifier,
     },
-}
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
-pub enum BinaryOperator {
-    Add,    // +
-    Sub,    // -
-    Mul,    // *
-    Div,    // /
-    Mod,    // %
-    Eq,     // ==
-    Ne,     // !=
-    Lt,     // <
-    Gt,     // >
-    Le,     // <=
-    Ge,     // >=
-    And,    // &&
-    Or,     // ||
-    BitAnd, // &
-    BitOr,  // |
-    BitXor, // ^
-    Shr,    // >>
-    Shl,    // <<
-}
+    Index {
+        base: Box<Node>,
+        index: Box<Node>,
+    },
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
-pub enum AsignmentOperator {
-    Assign,       // =
-    AddAssign,    // +=
-    SubAssign,    // -=
-    MulAssign,    // *=
-    DivAssing,    // /=
-    ModAssing,    // %=
-    BitAndAssign, // &=
-    BitOrAssign,  // |=
-    BitXorAssign, // ^=
-    ShlAssign,    // <<=
-    ShrAssign,    // >>=
-}
+    IdentifierNode(Identifier),
+    Literal(LiteralValue),
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
-pub enum UnaryOperator {
-    Neg,     // -
-    Not,     // !
-    BitNot,  // ~
-    Deref,   // *
-    AddrOf,  // &
-    PreInc,  // ++x
-    PreDec,  // --x
-    PostInc, // x++
-    PostDec, // x--
+    Call {
+        identifier: Box<Node>,
+        arguments: Vec<Node>,
+    },
 }
