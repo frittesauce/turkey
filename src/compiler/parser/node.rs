@@ -23,7 +23,7 @@ pub enum RawNode {
 
     TypeDef {
         identifier: Identifier,
-        ty: Box<Node>,
+        ty: Type,
     },
 
     StructDecl {
@@ -52,8 +52,69 @@ pub enum RawNode {
         right: Box<Node>,
     },
 
+    Asignment {
+        target: Box<Node>,
+        op: AsignmentOperator,
+        value: Box<Node>,
+    },
+
     UnaryOp {
         op: String,
         expr: Box<Node>,
     },
+
+    Call {
+        identifier: Identifier,
+        argments: Vec<Node>,
+    },
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum BinaryOperator {
+    Add,    // +
+    Sub,    // -
+    Mul,    // *
+    Div,    // /
+    Mod,    // %
+    Eq,     // ==
+    Ne,     // !=
+    Lt,     // <
+    Gt,     // >
+    Le,     // <=
+    Ge,     // >=
+    And,    // &&
+    Or,     // ||
+    BitAnd, // &
+    BitOr,  // |
+    BitXor, // ^
+    Shr,    // >>
+    Shl,    // <<
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum AsignmentOperator {
+    Assign,       // =
+    AddAssign,    // +=
+    SubAssign,    // -=
+    MulAssign,    // *=
+    DivAssing,    // /=
+    ModAssing,    // %=
+    BitAndAssign, // &=
+    BitOrAssign,  // |=
+    BitXorAssign, // ^=
+    ShlAssign,    // <<=
+    ShrAssign,    // >>=
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub enum UnaryOperator {
+    Neg,     // -
+    Not,     // !
+    BitNot,  // ~
+    Deref,   // *
+    AddrOf,  // &
+    PreInc,  // ++x
+    PreDec,  // --x
+    PostInc, // x++
+    PostDec, // x--
 }
