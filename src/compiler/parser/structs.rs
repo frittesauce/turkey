@@ -2,7 +2,15 @@ use crate::common::position::Span;
 
 pub type Identifier = Span<String>;
 pub type Type = Span<RawType>;
+pub type Parameter = Span<RawParameter>;
 
+#[derive(Debug, PartialEq, Eq)]
+pub struct RawParameter {
+    pub identifier: Identifier,
+    pub ty: Type,
+}
+
+#[derive(Eq, PartialEq, Debug)]
 pub enum RawType {
     Void,
     Bool,
@@ -23,4 +31,6 @@ pub enum RawType {
 
     Unsigned(Box<RawType>),
     Signed(Box<RawType>),
+
+    Other(Identifier),
 }
