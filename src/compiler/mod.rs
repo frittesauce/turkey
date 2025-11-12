@@ -1,8 +1,9 @@
 use std::{fs, process};
 
-use crate::compiler::lexer::{lexer, parser::parser};
+use crate::compiler::{lexer::lexer, parser::parser};
 
 mod lexer;
+mod parser;
 
 pub fn compile(path: &str) {
     let content = fs::read_to_string(path).unwrap_or_else(|err| {

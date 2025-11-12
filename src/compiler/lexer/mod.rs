@@ -3,7 +3,6 @@ use crate::compiler::lexer::{
     token::{Token, TokenKind},
 };
 
-pub mod parser;
 pub mod reader;
 pub mod token;
 

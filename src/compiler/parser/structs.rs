@@ -10,13 +10,17 @@ pub enum RawType {
     Char,
     String,
 
-    Int,
+    U16,
+    S16,
+    U32,
+    S32,
+    U64,
+    S64,
 
-    Float,
-    Double,
+    F32,
+    F64,
+    F128,
 
-    Short(Box<RawType>),
-    Long(Box<RawType>),
     Unsigned(Box<RawType>),
     Signed(Box<RawType>),
 }
