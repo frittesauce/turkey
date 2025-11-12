@@ -34,12 +34,23 @@ pub enum RawNode {
         fields: Vec<Node>,
     },
 
+    StructInit {
+        ty: Type,
+        fields: Vec<(Identifier, Node)>,
+    },
+
     Scope(Vec<Node>),
 
     If {
         condition: Box<Node>,
         body: Box<Node>,
         else_body: Option<Box<Node>>,
+    },
+
+    Ternary {
+        condition: Box<Node>,
+        then: Box<Node>,
+        esle: Box<Node>,
     },
 
     While {
@@ -85,9 +96,24 @@ pub enum RawNode {
 
     IdentifierNode(Identifier),
     Literal(LiteralValue),
+    ArrayLiteral(Vec<Node>),
 
     Call {
-        identifier: Box<Node>,
+        callee: Box<Node>,
         arguments: Vec<Node>,
     },
+
+    Goto {
+        label: Identifier,
+    },
+
+    Label {
+        identifier: Identifier,
+        body: Box<Node>,
+    },
+
+    SizeOf(Type),
+
+    Break,
+    Continue,
 }
