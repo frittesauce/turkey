@@ -1,6 +1,6 @@
 use std::{fs, process};
 
-use crate::compiler::{lexer::lexer, parser::parser};
+use crate::compiler::{lexer::lexer, parser::pars};
 
 mod lexer;
 mod parser;
