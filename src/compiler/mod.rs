@@ -13,5 +13,5 @@ pub fn compile(path: &str) {
 
     let tokens = lexer(&content);
 
-    let ast = parser(tokens);
+    let ast = pars(tokens);
 }
