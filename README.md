@@ -1,6 +1,6 @@
 # Info
 
-Turkey is going to be a simple c like programing language writen in rust!
+Turcey(pronounced Turkey) is going to be a simple c like programing language writen in rust!
 
                         
 ## Stargazers over time
