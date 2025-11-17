@@ -1,7 +1,7 @@
 
 ---
 
-# 🦃 **Turcey, Simplicity and tastefull**
+# 🦃 **Turcey, Simple and tastefull**
 
 <p align="center">
   <img src="./github/turceycat.gif" width="300">
