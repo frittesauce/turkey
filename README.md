@@ -1,7 +1,7 @@
 
 ---
 
-# 🦃 **Turcey, The Low-Level Language that goes *Gobble Mode* on C**
+# 🦃 **Turcey, Simplicity and tastefull**
 
 <p align="center">
   <img src="./github/turceycat.gif" width="300">
