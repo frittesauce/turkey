@@ -13,5 +13,9 @@ pub fn compile(path: &str) {
 
     let tokens = lexer(&content);
 
+    println!("{:#?}", tokens);
+
     let ast = pars(tokens);
+
+    println!("{:#?}", ast);
 }

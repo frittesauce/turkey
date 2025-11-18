@@ -116,4 +116,6 @@ pub enum RawNode {
 
     Break,
     Continue,
+
+    Error(String),
 }
