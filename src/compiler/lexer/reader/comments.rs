@@ -15,18 +15,18 @@ impl Reader {
 
         raw.push(char.value);
 
-        while self.advance().is_some() {
-            raw.push(char.value);
+        while let Some(ch) = self.advance() {
+            raw.push(ch.value);
 
             position_tracker
                 .position_range
-                .set_end(char.position_range.end);
+                .set_end(ch.position_range.end);
 
-            if char.value == '\n' {
+            if ch.value == '\n' {
                 break;
             }
 
-            string.push(char.value);
+            string.push(ch.value);
         }
 
         Token::new(
