@@ -2,7 +2,7 @@ use std::fmt::{self, Display};
 
 use crate::common::position::PositionRange;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Token {
     pub token_kind: TokenKind,
     pub position_range: PositionRange,

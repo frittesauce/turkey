@@ -43,7 +43,7 @@ impl Parser {
         return None;
     }
 
-    pub fn is_type(&mut self, tk: &TokenKind) -> bool {
+    pub fn is_type(&self, tk: &TokenKind) -> bool {
         use TokenKind::*;
 
         let is_type = match tk {
