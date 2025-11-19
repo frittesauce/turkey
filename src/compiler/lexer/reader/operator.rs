@@ -17,7 +17,7 @@ impl Reader {
                 let mut temp_string = string.clone();
                 temp_string.push(*c);
 
-                return match_operator(temp_string.as_str()) != None;
+                match_operator(temp_string.as_str()) != None
             }) {
                 Some(c) => c,
                 None => {
@@ -30,6 +30,6 @@ impl Reader {
             location.position_range.set_end(char.position_range.end);
         }
 
-        return Token::new(kind, location.position_range, string);
+        Token::new(kind, location.position_range, string)
     }
 }

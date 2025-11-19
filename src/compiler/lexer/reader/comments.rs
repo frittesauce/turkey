@@ -5,11 +5,11 @@ use crate::compiler::lexer::{
 
 impl Reader {
     pub fn parse_single_comment(&mut self) -> Token {
-        let mut postion_tracker = self.advance().unwrap();
+        let mut position_tracker = self.advance().unwrap();
         let mut string = String::new();
         let mut raw = String::new();
 
-        raw.push(postion_tracker.value);
+        raw.push(position_tracker.value);
 
         let char = self.advance().unwrap();
 
@@ -23,7 +23,7 @@ impl Reader {
 
             raw.push(char.value);
 
-            postion_tracker
+            position_tracker
                 .position_range
                 .set_end(char.position_range.end);
 
@@ -34,19 +34,19 @@ impl Reader {
             string.push(char.value);
         }
 
-        return Token::new(
+        Token::new(
             TokenKind::SingleLineComment(string),
-            postion_tracker.position_range,
+            position_tracker.position_range,
             raw,
-        );
+        )
     }
 
     pub fn parse_multi_comment(&mut self) -> Token {
-        let mut postion_tracker = self.advance().unwrap();
+        let mut position_tracker = self.advance().unwrap();
         let mut string = String::new();
         let mut raw = String::new();
 
-        raw.push(postion_tracker.value);
+        raw.push(position_tracker.value);
 
         let char = self.advance().unwrap();
 
@@ -55,37 +55,40 @@ impl Reader {
         loop {
             let char = match self.advance() {
                 Some(c) => c,
-                None => break,
+                None => {
+                    return Token::new(
+                        TokenKind::Error("Unterminated multi-line comment".to_string()),
+                        position_tracker.position_range,
+                        raw,
+                    );
+                }
             };
 
             raw.push(char.value);
-            postion_tracker
+            position_tracker
                 .position_range
                 .set_end(char.position_range.end);
 
             if char.value == '*' {
-                if self.peek().unwrap().value == '/' {
-                    break;
+                if let Some(next) = self.peek() {
+                    if next.value == '/' {
+                        string.push(char.value);
+                        break;
+                    }
                 }
             }
 
             string.push(char.value);
-
-            if char.value == '*' {
-                if self.peek().unwrap().value == '/' {
-                    break;
-                }
-            }
         }
 
         let char = self.advance().unwrap();
 
         raw.push(char.value);
 
-        return Token::new(
+        Token::new(
             TokenKind::MultiLineComment(string),
-            postion_tracker.position_range,
+            position_tracker.position_range,
             raw,
-        );
+        )
     }
 }

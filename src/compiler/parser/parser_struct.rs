@@ -17,7 +17,7 @@ impl Parser {
             types.insert(ty.to_string());
         }
 
-        return Self { tokens, types };
+        Self { tokens, types }
     }
 
     pub fn advance(&mut self) -> Option<Token> {
@@ -40,7 +40,7 @@ impl Parser {
         if condition(&peek) {
             return self.advance();
         }
-        return None;
+        None
     }
 
     pub fn is_type(&self, tk: &TokenKind) -> bool {
@@ -52,6 +52,6 @@ impl Parser {
             _ => false,
         };
 
-        return is_type;
+        is_type
     }
 }

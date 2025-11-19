@@ -5,10 +5,10 @@ use crate::compiler::lexer::{
 
 impl Reader {
     pub fn parse_identifier(&mut self) -> Token {
-        let mut postion_tracker = self.advance().unwrap();
+        let mut position_tracker = self.advance().unwrap();
         let mut raw = String::new();
 
-        raw.push(postion_tracker.value);
+        raw.push(position_tracker.value);
 
         loop {
             let char = match self.advance_if(|c| c.is_alphanumeric() || c == &'_') {
@@ -17,19 +17,17 @@ impl Reader {
             };
 
             raw.push(char.value);
-            postion_tracker
+            position_tracker
                 .position_range
                 .set_end(char.position_range.end);
         }
         match match_keyword(raw.as_str()) {
-            Some(kind) => return Token::new(kind, postion_tracker.position_range, raw),
-            None => {
-                return Token::new(
-                    TokenKind::Identifier(raw.clone()),
-                    postion_tracker.position_range,
-                    raw,
-                );
-            }
+            Some(kind) => Token::new(kind, position_tracker.position_range, raw),
+            None => Token::new(
+                TokenKind::Identifier(raw.clone()),
+                position_tracker.position_range,
+                raw,
+            ),
         }
     }
 }

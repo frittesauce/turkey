@@ -15,7 +15,7 @@ impl Reader {
 
         str.push(next.value);
 
-        return match next.value {
+        match next.value {
             'n' => Ok(Span::new(next.position_range, '\n')),
             'r' => Ok(Span::new(next.position_range, '\r')),
             't' => Ok(Span::new(next.position_range, '\t')),
@@ -42,15 +42,15 @@ impl Reader {
                     }
                 }
                 if count == 0 {
-                    return Err(Span::new(
+                    Err(Span::new(
                         next.position_range,
                         "Invalid hex escape: expected 1-2 hex digits after \\x".to_string(),
-                    ));
+                    ))
                 } else {
-                    return Ok(Span::new(
+                    Ok(Span::new(
                         next.position_range,
                         std::char::from_u32(val).unwrap_or('\u{FFFD}'),
-                    ));
+                    ))
                 }
             }
 
@@ -70,17 +70,17 @@ impl Reader {
                         _ => break,
                     }
                 }
-                return Ok(Span::new(
+                Ok(Span::new(
                     next.position_range,
                     std::char::from_u32(val).unwrap_or('\u{FFD}'),
-                ));
+                ))
             }
 
             other => Err(Span::new(
                 next.position_range,
                 format!("unkown escape sequence: \\{}", other),
             )),
-        };
+        }
     }
 
     pub fn parse_string(&mut self) -> Token {
@@ -93,7 +93,13 @@ impl Reader {
         loop {
             let char = match self.advance() {
                 Some(c) => c,
-                None => break,
+                None => {
+                    return Token::new(
+                        TokenKind::Error("Unterminated string literal".to_string()),
+                        position_tracker.position_range,
+                        raw,
+                    );
+                }
             };
 
             raw.push(char.value);
@@ -130,11 +136,11 @@ impl Reader {
                 }
             }
         }
-        return Token::new(
+        Token::new(
             TokenKind::StringLiteral(string),
             position_tracker.position_range,
             raw,
-        );
+        )
     }
 
     pub fn parse_char(&mut self) -> Token {
@@ -146,7 +152,13 @@ impl Reader {
 
         let char = match self.advance() {
             Some(c) => c,
-            None => panic!("something went wrong whilest parsing a char!"),
+            None => {
+                return Token::new(
+                    TokenKind::Error("Unterminated char literal".to_string()),
+                    position_tracker.position_range,
+                    raw,
+                );
+            }
         };
         raw.push(char.value);
 
@@ -197,7 +209,13 @@ impl Reader {
                 loop {
                     let c = match self.advance() {
                         Some(c) => c,
-                        None => break,
+                        None => {
+                            return Token::new(
+                                TokenKind::Error("Unterminated char literal".to_string()),
+                                position_tracker.position_range,
+                                raw,
+                            );
+                        }
                     };
                     position_tracker
                         .position_range
@@ -216,10 +234,10 @@ impl Reader {
                 );
             }
         }
-        return Token::new(
+        Token::new(
             TokenKind::CharLiteral(string),
             position_tracker.position_range,
             raw,
-        );
+        )
     }
 }

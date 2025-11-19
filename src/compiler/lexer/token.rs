@@ -11,11 +11,11 @@ pub struct Token {
 
 impl Token {
     pub fn new(token_kind: TokenKind, position_range: PositionRange, string: String) -> Self {
-        return Self {
+        Self {
             token_kind,
             position_range,
             string,
-        };
+        }
     }
 }
 
@@ -184,7 +184,7 @@ pub fn match_keyword(str: &str) -> Option<TokenKind> {
         _ => return None,
     };
 
-    return Some(kind);
+    Some(kind)
 }
 
 pub fn match_operator(str: &str) -> Option<TokenKind> {
@@ -250,7 +250,7 @@ pub fn match_operator(str: &str) -> Option<TokenKind> {
         _ => return None,
     };
 
-    return Some(kind);
+    Some(kind)
 }
 
 impl Display for Token {

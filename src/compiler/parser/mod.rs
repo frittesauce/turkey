@@ -6,7 +6,6 @@ pub mod structs;
 
 pub fn pars(mut tokens: Vec<Token>) -> Vec<Node> {
     tokens.reverse();
-    println!("parsing shit");
 
     let mut parser = parser_struct::Parser::new(tokens);
     let mut nodes: Vec<Node>;

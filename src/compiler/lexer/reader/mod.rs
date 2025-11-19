@@ -50,7 +50,7 @@ impl Reader {
 
         output.reverse();
 
-        return Self { chars: output };
+        Self { chars: output }
     }
 
     pub fn advance(&mut self) -> Option<Character> {
@@ -77,6 +77,6 @@ impl Reader {
         if condition(&peek.value) {
             return self.advance();
         }
-        return None;
+        None
     }
 }

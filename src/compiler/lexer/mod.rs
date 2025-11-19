@@ -11,7 +11,6 @@ pub fn lexer(src: &str) -> Vec<Token> {
 
     let mut reader = Reader::new(src);
 
-    println!("going to start looping through chars for the tokens now!");
     loop {
         let token = reader.next();
 
@@ -22,5 +21,5 @@ pub fn lexer(src: &str) -> Vec<Token> {
         tokens.push(token);
     }
 
-    return tokens;
+    tokens
 }

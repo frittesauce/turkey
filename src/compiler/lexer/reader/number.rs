@@ -12,10 +12,10 @@ enum NumberType {
 
 impl NumberType {
     fn base(&self) -> u32 {
-        return match self {
+        match self {
             NumberType::Hex => 16,
             _ => 10,
-        };
+        }
     }
 }
 
@@ -29,17 +29,23 @@ impl Reader {
 
         raw.push(position_tracker.value);
 
-        if position_tracker.value == '0' && self.peek().unwrap().value == 'x' {
-            num_type = NumberType::Hex;
+        if position_tracker.value == '0' {
+            if let Some(next) = self.peek() {
+                if next.value == 'x' {
+                    num_type = NumberType::Hex;
 
-            let char = self.advance().unwrap();
+                    let char = self.advance().unwrap();
 
-            raw.push(char.value);
+                    raw.push(char.value);
 
-            position_tracker
-                .position_range
-                .set_end(char.position_range.end);
-        } else {
+                    position_tracker
+                        .position_range
+                        .set_end(char.position_range.end);
+                }
+            }
+        }
+
+        if num_type != NumberType::Hex {
             string.push(position_tracker.value);
         }
 
@@ -90,6 +96,6 @@ impl Reader {
             },
         };
 
-        return Token::new(token_kind, position_tracker.position_range, raw);
+        Token::new(token_kind, position_tracker.position_range, raw)
     }
 }

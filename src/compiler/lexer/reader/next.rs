@@ -21,8 +21,17 @@ impl Reader {
             };
 
             return match chr.value {
-                '/' if self.peek_second().unwrap().value == '/' => self.parse_single_comment(),
-                '/' if self.peek_second().unwrap().value == '*' => self.parse_multi_comment(),
+                '/' => {
+                    if let Some(second) = self.peek_second() {
+                        match second.value {
+                            '/' => self.parse_single_comment(),
+                            '*' => self.parse_multi_comment(),
+                            _ => self.parse_operator(),
+                        }
+                    } else {
+                        self.parse_operator()
+                    }
+                }
 
                 '"' => self.parse_string(),
                 '\'' => self.parse_char(),

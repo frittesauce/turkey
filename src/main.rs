@@ -6,8 +6,6 @@ pub mod common;
 pub mod compiler;
 
 fn main() {
-    println!("welcome to turkey! dont use this language!");
-
     let args: Vec<String> = env::args().collect();
 
     if args.len() < 2 {

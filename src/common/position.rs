@@ -15,17 +15,17 @@ pub struct Position {
 
 impl Position {
     pub fn new(line: usize, column: usize, char: usize) -> Self {
-        return Self { line, column, char };
+        Self { line, column, char }
     }
 
     pub fn to_range(self) -> PositionRange {
-        return PositionRange::new(self.clone(), self);
+        PositionRange::new(self, self)
     }
 }
 
 impl PositionRange {
     pub fn new(start: Position, end: Position) -> Self {
-        return Self { start, end };
+        Self { start, end }
     }
 
     pub fn set_end(&mut self, position: Position) {
@@ -41,10 +41,10 @@ pub struct Span<T = ()> {
 
 impl<T> Span<T> {
     pub fn new(position_range: PositionRange, value: T) -> Self {
-        return Self {
+        Self {
             position_range,
             value,
-        };
+        }
     }
 }
 
