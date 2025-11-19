@@ -24,12 +24,7 @@ impl Reader {
         let mut column: usize = 0;
         let mut character: usize = 0;
 
-        loop {
-            let char = match input.next() {
-                Some(char) => char,
-                None => break,
-            };
-
+        for char in input {
             match char {
                 '\r' => continue,
                 '\t' => column += TAB_SIZE,
@@ -69,10 +64,7 @@ impl Reader {
     where
         C: FnOnce(&char) -> bool,
     {
-        let peek = match self.peek() {
-            Some(p) => p,
-            None => return None,
-        };
+        let peek = self.peek()?;
 
         if condition(&peek.value) {
             return self.advance();

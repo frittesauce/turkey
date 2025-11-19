@@ -29,9 +29,6 @@ pub enum RawType {
     F64,
     F128,
 
-    Unsigned(Box<RawType>),
-    Signed(Box<RawType>),
-
     Other(Identifier),
 }
 

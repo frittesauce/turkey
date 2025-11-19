@@ -36,8 +36,10 @@ impl Reader {
                 '"' => self.parse_string(),
                 '\'' => self.parse_char(),
 
-                char if match_operator(char.to_string().as_str()) != None => self.parse_operator(),
-                char if char.is_digit(10) => self.parse_number(),
+                char if match_operator(char.to_string().as_str()).is_some() => {
+                    self.parse_operator()
+                }
+                char if char.is_ascii_digit() => self.parse_number(),
                 char if char.is_alphabetic() || char == '_' => self.parse_identifier(),
 
                 char if char.is_whitespace() => {

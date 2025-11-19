@@ -10,17 +10,13 @@ impl Reader {
 
         raw.push(position_tracker.value);
 
-        loop {
-            let char = match self.advance_if(|c| c.is_alphanumeric() || c == &'_') {
-                Some(c) => c,
-                None => break,
-            };
-
+        while let Some(char) = self.advance_if(|c| c.is_alphanumeric() || c == &'_') {
             raw.push(char.value);
             position_tracker
                 .position_range
                 .set_end(char.position_range.end);
         }
+
         match match_keyword(raw.as_str()) {
             Some(kind) => Token::new(kind, position_tracker.position_range, raw),
             None => Token::new(

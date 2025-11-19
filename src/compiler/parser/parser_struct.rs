@@ -32,12 +32,8 @@ impl Parser {
     where
         C: FnOnce(&Token) -> bool,
     {
-        let peek = match self.peek() {
-            Some(p) => p,
-            None => return None,
-        };
-
-        if condition(&peek) {
+        let peek = self.peek()?;
+        if condition(peek) {
             return self.advance();
         }
         None
@@ -46,12 +42,10 @@ impl Parser {
     pub fn is_type(&self, tk: &TokenKind) -> bool {
         use TokenKind::*;
 
-        let is_type = match tk {
+        match tk {
             Identifier(id) => self.types.contains(id),
             U16 | I16 | U32 | I32 | U64 | I64 | F32 | F64 | F128 | Void | Bool | Char => true,
             _ => false,
-        };
-
-        is_type
+        }
     }
 }

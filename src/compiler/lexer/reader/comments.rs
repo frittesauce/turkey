@@ -15,12 +15,7 @@ impl Reader {
 
         raw.push(char.value);
 
-        loop {
-            let char = match self.advance() {
-                Some(c) => c,
-                None => break,
-            };
-
+        while self.advance().is_some() {
             raw.push(char.value);
 
             position_tracker
@@ -69,13 +64,12 @@ impl Reader {
                 .position_range
                 .set_end(char.position_range.end);
 
-            if char.value == '*' {
-                if let Some(next) = self.peek() {
-                    if next.value == '/' {
-                        string.push(char.value);
-                        break;
-                    }
-                }
+            if char.value == '*'
+                && let Some(next) = self.peek()
+                && next.value == '/'
+            {
+                string.push(char.value);
+                break;
             }
 
             string.push(char.value);

@@ -17,7 +17,7 @@ impl Reader {
                 let mut temp_string = string.clone();
                 temp_string.push(*c);
 
-                match_operator(temp_string.as_str()) != None
+                match_operator(temp_string.as_str()).is_some()
             }) {
                 Some(c) => c,
                 None => {

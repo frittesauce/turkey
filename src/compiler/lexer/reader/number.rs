@@ -29,20 +29,19 @@ impl Reader {
 
         raw.push(position_tracker.value);
 
-        if position_tracker.value == '0' {
-            if let Some(next) = self.peek() {
-                if next.value == 'x' {
-                    num_type = NumberType::Hex;
+        if position_tracker.value == '0'
+            && let Some(next) = self.peek()
+            && next.value == 'x'
+        {
+            num_type = NumberType::Hex;
 
-                    let char = self.advance().unwrap();
+            let char = self.advance().unwrap();
 
-                    raw.push(char.value);
+            raw.push(char.value);
 
-                    position_tracker
-                        .position_range
-                        .set_end(char.position_range.end);
-                }
-            }
+            position_tracker
+                .position_range
+                .set_end(char.position_range.end);
         }
 
         if num_type != NumberType::Hex {
